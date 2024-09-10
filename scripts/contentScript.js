@@ -1,3 +1,5 @@
+//Get solved problems and store them in local storage
+
 const tasks = document.querySelectorAll('li.task');
 
 let problemData = {};
