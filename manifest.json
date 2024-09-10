@@ -1,0 +1,25 @@
+{
+    "name": "CSES Extension",
+    "version": "1.0",
+    "manifest_version": 3,
+    "description": "CSES Extension",
+    "icons": {
+        "16": "assets/logo.png",
+        "48": "assets/logo.png",
+        "128": "assets/logo.png"
+    },
+    "permissions": ["storage", "tabs", "activeTab"],
+    "host_permissions": ["https://cses.fi/*"],
+    "background": {
+        "service_worker": "./scripts/background.js"
+    },
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://cses.fi/*"],
+            "js": ["./scripts/contentScript.js"]
+        }
+    ]
+}
