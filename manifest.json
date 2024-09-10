@@ -18,7 +18,7 @@
     },
     "content_scripts": [
         {
-            "matches": ["https://cses.fi/*"],
+            "matches": ["https://cses.fi/problemset/"],
             "js": ["./scripts/contentScript.js"]
         }
     ]
