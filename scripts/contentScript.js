@@ -6,6 +6,7 @@ let problemData = {};
 console.log("RAN");
 
 let solvedProblems = [];
+let allProblems = [];
 
 tasks.forEach(task => {
     const taskLink = task.querySelector('a')
@@ -16,6 +17,8 @@ tasks.forEach(task => {
     if(problemNumber && status === 'solved') {
         solvedProblems.push(problemNumber[1]);
     }
+    allProblems.push(problemNumber[1]);
 })
 
 chrome.storage.local.set({solvedProblems: solvedProblems}, function() {});
+chrome.storage.local.set({allProblems: allProblems}, function() {});

@@ -1,7 +1,7 @@
 let problems
-chrome.storage.local.get('problemData', function(result) {
-    if (result.problemData) {
-        problems = result.problemData;
+chrome.storage.local.get('allProblems', function(result) {
+    if (result.allProblems) {
+        problems = result.allProblems;
     }
 });
 
@@ -13,20 +13,20 @@ chrome.storage.local.get('solvedProblems', function(result) {
         solved = result.solvedProblems;
 
         // Set the text of the header with id="num-solved"
-        document.getElementById('num-solved').textContent = `Solved ${numSolved} / ${Object.keys(problems).length}`;
+        document.getElementById('num-solved').textContent = `Solved\n ${numSolved} / ${Object.keys(problems).length}`;
     } else {
         // If no solved problems are found, set the text accordingly
-        document.getElementById('num-solved').textContent = 'Solved 0 / ${problems.length}';
+        document.getElementById('num-solved').textContent = 'Solved\n0 / ${problems.length}';
     }
 });
 
-// Next proble button
+// Next problem button
 document.getElementById('next').addEventListener('click', () => {
     let problemNumber = 0;
-    let problemKeys = Object.keys(problems);
-    while(problemKeys.length > 0) {
-        let randomIndex = Math.floor(Math.random() * problemKeys.length);
-        problemNumber = problemKeys[randomIndex];
+    let problemsCopy = [...problems];
+    while(problemsCopy.length > 0) {
+        let randomIndex = Math.floor(Math.random() * problemsCopy.length);
+        problemNumber = problemsCopy[randomIndex];
         let flag = false;
         for(let i = 0; i < solved.length; i++) {
             if(solved[i] == problemNumber) {
@@ -35,22 +35,26 @@ document.getElementById('next').addEventListener('click', () => {
             }
         }
         if(flag) {
-            problemKeys.splice(randomIndex, 1);
+            problemsCopy.splice(randomIndex, 1);
         }
         else {
             break;
         }
     }
-    const nextUrl = `https://cses.fi/problemset/task/${problemNumber}`;
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) { //pick random unsolved problem
-        if(tabs[0].url.includes("cses.fi")) {
-            chrome.tabs.update(tabs[0].id, {url: nextUrl});
-        }
-        else{
-            chrome.tabs.create({url: nextUrl});
-        }
-    });
-    console.log('Next button clicked');
+    if(problemsCopy.length == 0) {
+        document.getElementById('next').textContent = 'Solved all problems :)';
+    }
+    else{
+        const nextUrl = `https://cses.fi/problemset/task/${problemNumber}`;
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) { //pick random unsolved problem
+            if(tabs[0].url.includes("cses.fi")) {
+                chrome.tabs.update(tabs[0].id, {url: nextUrl});
+            }
+            else{
+                chrome.tabs.create({url: nextUrl});
+            }
+        });
+    }
 });
 
 
