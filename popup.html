@@ -9,11 +9,52 @@
                 margin:5px;
                 padding: 10px;
             }
+            h1 {
+                font-size: 24px;
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 5px;
+            }
+            #num-solved {
+                font-size: 16px;
+                font-weight: bold;
+                text-align: center;
+                margin-top: 0px;
+            }
+            button {
+                background-color: #4CAF50;
+                border: none;
+                color: white;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+            }
+            #load-solved {
+                background-color: #008CBA;
+                font-size: 10px;
+                margin: 0px 2px;
+            }
+            #problem-category {
+                font-size: 16px;
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 0px;
+            }
+            #show-tags {
+                margin-bottom: 0px;
+            }
         </style>
     </head>
     <body>
-        <p id = "num-solved">Solved 0 / 300</p>
-        <button id="load-solved">Load Solved Problems</button>
+        <h1>Solved</h1>
+        <p id = "num-solved">0 / i</p>
+        <button id="load-solved">Reload Problem Data</button>
+        <p id = "problem-category">Problem Category</p>
+        <button id="show-tags">Show</button>
         <button id="next">Next Problem</button>
         <script src="./scripts/popup.js"></script>
     </body>

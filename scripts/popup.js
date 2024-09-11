@@ -1,4 +1,4 @@
-let problems
+let problems = [];
 chrome.storage.local.get('allProblems', function(result) {
     if (result.allProblems) {
         problems = result.allProblems;
@@ -7,16 +7,29 @@ chrome.storage.local.get('allProblems', function(result) {
 
 let solved = [];
 chrome.storage.local.get('solvedProblems', function(result) {
+    updateProblems(result);
+});
+
+function updateProblems(result) {
     if (result.solvedProblems) {
         // Get the number of solved problems
         const numSolved = result.solvedProblems.length;
         solved = result.solvedProblems;
 
         // Set the text of the header with id="num-solved"
-        document.getElementById('num-solved').textContent = `Solved\n ${numSolved} / ${Object.keys(problems).length}`;
+        document.getElementById('num-solved').textContent = `${numSolved} / ${problems.length}`;
     } else {
         // If no solved problems are found, set the text accordingly
-        document.getElementById('num-solved').textContent = 'Solved\n0 / ${problems.length}';
+        document.getElementById('num-solved').textContent = '0 / ${problems.length}';
+    }
+}
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.action === 'updateProblems') {
+        cout << "RAN";
+        chrome.storage.local.get('solvedProblems', function(result) {
+            updateProblems(result);
+        });
     }
 });
 
@@ -57,8 +70,6 @@ document.getElementById('next').addEventListener('click', () => {
     }
 });
 
-
-
 // Load solved button
 document.getElementById('load-solved').addEventListener('click', () => {
     chrome.tabs.create({url: 'https://cses.fi/problemset/'}, function(newTab) {
@@ -75,6 +86,29 @@ document.getElementById('load-solved').addEventListener('click', () => {
     });
 });
 
-
+chrome.storage.local.get('showTags', function(result) {
+    if(result.showTags) {
+        document.getElementById('show-tags').textContent = 'Hide';
+    }
+    else {
+        document.getElementById('show-tags').textContent = 'Show';
+    }
+});
+// Show/hide tags button
+document.getElementById('show-tags').addEventListener('click', () => {
+    if(document.getElementById('show-tags').textContent == 'Show') {
+        document.getElementById('show-tags').textContent = 'Hide';
+        if(window.location.href == 'https://cses.fi/problemset/*') {
+            window.location.reload(true);
+        }
+    }
+    else {
+        document.getElementById('show-tags').textContent = 'Show';
+    }
+    chrome.storage.local.get('showTags', function(result) {
+        const showTags = result.showTags;
+        chrome.storage.local.set({showTags: !showTags}, function() {});
+    });
+});
 
 
